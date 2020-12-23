@@ -1,30 +1,31 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { View, TextInput, Text } from "react-native";
-import { Button, Dialog, Paragraph } from 'react-native-paper'
-import stylesInputs from './styles/inputs/s';
+import { Button, Dialog, Paragraph } from "react-native-paper";
+import stylesInputs from "./styles/inputs/s";
 
 export default function AuthEmail({ route, navigation }) {
   const [authCode, setAuthCode] = useState(0);
   const handleTextChange = (value) => {
     setAuthCode(value);
   };
-  const [visible, setVisible] = useState(false)
-  const [ alertMessage, setAlertMessage ] = useState("")
+  const [visible, setVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const hideDialog = () => {
-    setVisible(!visible)
-  }
-  console.log(route)
+    setVisible(!visible);
+  };
+  console.log(route);
   const authenticateEmail = () => {
     const userId = route.params.id;
-    axios.get(`http://192.168.0.2:3001/users/${userId}`)
+    axios
+      .get(`http://localhost:3001/users/${userId}`)
       .then((user) => {
         let userCode = user.data.segNumber;
         if (userCode == authCode) {
           navigation.navigate("UpdateUser", route.params);
         } else {
-          setAlertMessage("El código de autenticación es incorrecto.")
-          setVisible(!visible)
+          setAlertMessage("El código de autenticación es incorrecto.");
+          setVisible(!visible);
         }
       })
       .catch((error) => {
@@ -34,18 +35,24 @@ export default function AuthEmail({ route, navigation }) {
 
   return (
     <>
-    <View>
-      <TextInput
-      style={stylesInputs.inputs}
-      placeholder="Ingrese el código"
-      onChangeText={(value) => handleTextChange(value)}
-      />
-      <Button mode="contained" onPress={() => authenticateEmail()}>
-        Siguiente
-      </Button>
-      <Text style={{textAlign: 'center', marginTop: 10}} /* onPress={() => props.navigation.navigate("FAQ")} */>
-        ¿Necesitas ayuda?</Text>
-    </View>
+      <View>
+        <TextInput
+          style={stylesInputs.inputs}
+          placeholder="Ingrese el código"
+          onChangeText={(value) => handleTextChange(value)}
+        />
+        <Button mode="contained" onPress={() => authenticateEmail()}>
+          Siguiente
+        </Button>
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 10,
+          }} /* onPress={() => props.navigation.navigate("FAQ")} */
+        >
+          ¿Necesitas ayuda?
+        </Text>
+      </View>
       <Dialog visible={visible} onDismiss={hideDialog}>
         <Dialog.Content>
           <Paragraph>{alertMessage}</Paragraph>

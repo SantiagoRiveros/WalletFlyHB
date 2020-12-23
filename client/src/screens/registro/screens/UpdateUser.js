@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
-import { Button, Dialog, Paragraph } from "react-native-paper";
+import { View, TextInput, StyleSheet, Text } from "react-native";
+import { Button, Dialog, Paragraph, RadioButton } from "react-native-paper";
 import stylesInputs from "./styles/inputs/s";
 
 export default function UpdateUserScreen({ route, navigation }) {
@@ -10,7 +10,7 @@ export default function UpdateUserScreen({ route, navigation }) {
     firstName: "",
     lastName: "",
     birthdate: "",
-    // documentType: "",
+    documentType: "DNI",
     documentNumber: "",
     phone: "",
   });
@@ -21,11 +21,11 @@ export default function UpdateUserScreen({ route, navigation }) {
   const [error, setError] = useState("");
   useEffect(() => {
     if (
-      !state.firstName ||
-      !state.lastName ||
-      !state.birthdate ||
-      !state.documentNumber ||
-      !state.phone
+      state.firstName === "" ||
+      state.lastName === "" ||
+      state.birthdate === "" ||
+      state.documentNumber === "" ||
+      state.phone === ""
     ) {
       setError("Este campo es obligatorio");
     } else {
@@ -51,7 +51,7 @@ export default function UpdateUserScreen({ route, navigation }) {
       state.firstName === "" ||
       state.lastName === "" ||
       state.birthdate === "" ||
-      // state.documentType === "" ||
+      state.documentType === "" ||
       state.documentNumber === "" ||
       state.phone === ""
     ) {
@@ -60,6 +60,7 @@ export default function UpdateUserScreen({ route, navigation }) {
     }
 
     if (birth() >= 16) {
+      console.log(state);
       navigation.navigate("UpdateUser2", state);
       setAlertMessage2("");
     } else {
@@ -89,6 +90,25 @@ export default function UpdateUserScreen({ route, navigation }) {
         />
         {<Text style={s.error}>{alertMessage2}</Text>}
         {!state.birthdate && <Text style={s.error}>{error}</Text>}
+        <View>
+          <Text>Selecciona Tipo de Documento:</Text>
+          <RadioButton
+            value="DNI"
+            status={state.documentType === "DNI" ? "checked" : "unchecked"}
+            onPress={() => setState({ ...state, ["documentType"]: "DNI" })}
+          />
+          <Text>DNI</Text>
+          <RadioButton
+            value="PASAPORTE"
+            status={
+              state.documentType === "PASAPORTE" ? "checked" : "unchecked"
+            }
+            onPress={() =>
+              setState({ ...state, ["documentType"]: "PASAPORTE" })
+            }
+          />
+          <Text>Pasaporte</Text>
+        </View>
         <TextInput
           style={stylesInputs.inputs}
           placeholder="Número de Documento"

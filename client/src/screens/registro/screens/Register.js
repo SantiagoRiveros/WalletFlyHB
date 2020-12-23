@@ -58,16 +58,14 @@ export default function CreateUserScreen(props) {
     }
 
     if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(state.password)) {
-      setAlertMessage4(
-        "Debes ingresar una contraseña de 8 caracteres alfanumericos y como mínimo una mayúscula."
-      );
+      setAlertMessage4();
       setVisible(!visible);
     } else {
       setAlertMessage4("");
     }
 
     axios
-      .post(`http://192.168.0.2:3001/userEmail`, state)
+      .post(`http://localhost:3001/userEmail`, state)
       .then(({ data }) => {
         props.navigation.navigate("AuthEmail", { id: data.user.id, state });
       })
@@ -117,7 +115,7 @@ export default function CreateUserScreen(props) {
           mode="contained"
           onPress={() => next()}
         >
-          Registarme
+          Registrarme
         </Button>
       </View>
       <Dialog visible={visible} onDismiss={hideDialog}>

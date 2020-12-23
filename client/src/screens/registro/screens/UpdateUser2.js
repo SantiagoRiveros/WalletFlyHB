@@ -10,6 +10,7 @@ export default function UpdateUserScreen({ route, navigation }) {
   const [state, setState] = useState({
     id: route.params.id,
     birthdate: route.params.birthdate,
+    documentType: route.params.documentType,
     documentNumber: route.params.documentNumber,
     email: route.params.email,
     firstName: route.params.firstName,
@@ -46,7 +47,7 @@ export default function UpdateUserScreen({ route, navigation }) {
       setVisible(!visible);
     } else {
       axios
-        .put(`http://192.168.0.2:3001/users/${state.id}/userAccount`, state)
+        .put(`http://localhost:3001/users/${state.id}/userAccount`, state)
         .then(({ data }) => {
           dispatch({
             type: USER,
